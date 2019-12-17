@@ -1,0 +1,17 @@
+#!/usr/bin/python
+
+import sys
+import os
+from subprocess import call
+
+arguments = ["open", "-W", "-n", "/Applications/Meld.app", "--args"] 
+
+for arg in sys.argv[1:]:
+  if arg[0]!='/' and arg[0]!='~' and arg[0]!='-':
+    arg = os.getcwd() + '/' + arg
+  arguments += [arg]
+
+#print sys.argv
+#print arguments
+sys.exit(call(arguments))
+
