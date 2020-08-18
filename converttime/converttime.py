@@ -6,11 +6,11 @@ It will attempt to guess whether the number you give it is seconds or millisecon
 """
 
 import time
-from datetime import timezone, datetime
+from datetime import timezone, datetime, timedelta
 import argparse
 import sys
 
-VERSION = "1.1.0"
+VERSION = "1.2.0"
 
 def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
@@ -35,6 +35,8 @@ def printtime(dt, outputTimeZone):
     print(dt.astimezone().isoformat(" "))
     print("UTC time:")
     print(dt.astimezone(timezone.utc).isoformat(" "))
+    # print("UTC time:")
+    # print(dt.astimezone(timezone(timedelta(hours=7))).isoformat(" "))
 
 def converttime(inputTime, inputTimeZone, outputTimeZone):
     if inputTime == "now":
@@ -46,13 +48,13 @@ def converttime(inputTime, inputTimeZone, outputTimeZone):
 
 def main():
     parser = argparse.ArgumentParser('Convert unix time to ISO-8601')
-    parser.add_argument('time', help='Time in either ms or s since epoch')
-    parser.add_argument('-itz', help='Input timezone or offset')
-    parser.add_argument('-otz', help='Output timezone or offset')
+    parser.add_argument('time', nargs='?', default='now', help='Time as a number in either ms or s since epoch, or "now"')
+    parser.add_argument('-itz', '--input-timezone', help='Input timezone or offset (not implemented)')
+    parser.add_argument('-otz', '--output-timezone', help='Output timezone or offset (not implemented)')
     parser.add_argument('-v', '--version', action='version',
         version=VERSION, help='Print the version')
     args = parser.parse_args()
-    converttime(args.time, args.itz, args.otz)
+    converttime(args.time, args.input_timezone, args.output_timezone)
 
 if __name__ == "__main__":
     main()
